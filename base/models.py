@@ -12,7 +12,7 @@ class Topic(models.Model):
 
 
 class Room(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True)
 
     # CharField should be used when you have a relatively short piece of text, like a name, title, or code,
