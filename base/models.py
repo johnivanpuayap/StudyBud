@@ -31,6 +31,10 @@ class Room(models.Model):
     # auto now add only takes a timestamp when we first save or create this instance
     created = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        # The - is used to sort it descending, by default it is sorted ascending
+        ordering = ['-updated', '-created']
+
     def __str__(self):
         return str(self.name)
 
