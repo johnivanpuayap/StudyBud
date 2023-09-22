@@ -5,6 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from .models import Room, Topic, User, Message
 from .forms import RoomForm
 
@@ -154,18 +155,6 @@ def delete_room(request, room_id):
 
     return render(request, 'base/delete.html', {'obj': room})
 
-@login_required(login_url='/login')
-def delete_message(request, message_id):
-    message = Message.objects.get(id=message_id)
-
-    if request.user != message.user:
-        return HttpResponse("You're not allowed here!")
-
-    if request.method == 'POST':
-        message.delete()
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-
-    return render(request, 'base/delete.html', {'obj': message})
 
 @login_required(login_url='/login')
 def delete_message(request, message_id):
@@ -176,6 +165,9 @@ def delete_message(request, message_id):
 
     if request.method == 'POST':
         message.delete()
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+        next_url = request.POST.get('next')
+
+        # Redirect to the 'next' URL
+        return HttpResponseRedirect(next_url)
 
     return render(request, 'base/delete.html', {'obj': message})
