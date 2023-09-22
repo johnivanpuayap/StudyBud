@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from .models import Room, Topic, User
+from .models import Room, Topic, User, Message
 from .forms import RoomForm
 
 
@@ -87,7 +87,23 @@ def home(request):
 def room(request, room_id):
     # return HttpResponse('Room')
     room = Room.objects.get(id=room_id)
-    context = {'room': room}
+
+    if request.method == 'POST':
+        message = Message.objects.create(
+            user=request.user,
+            room=room,
+            body=request.POST.get('body')
+        )
+
+        return redirect('room', room_id)
+
+    # Query for a specific child of room
+    # Do not use the variable messages since it will be displayed as an error by the flash images
+    room_messages = room.message_set.all().order_by('-created')
+    context = {
+        'room': room,
+        'room_messages': room_messages,
+    }
     return render(request, 'base/room.html', context)
 
 
