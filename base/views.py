@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.db.models import Q
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from .models import Room, Topic, User, Message
 from .forms import RoomForm
@@ -94,7 +94,7 @@ def room(request, room_id):
             room=room,
             body=request.POST.get('body')
         )
-
+        room.participants.add(request.user)
         return redirect('room', room_id)
 
     # Query for a specific child of room
@@ -153,3 +153,29 @@ def delete_room(request, room_id):
         return redirect('home')
 
     return render(request, 'base/delete.html', {'obj': room})
+
+@login_required(login_url='/login')
+def delete_message(request, message_id):
+    message = Message.objects.get(id=message_id)
+
+    if request.user != message.user:
+        return HttpResponse("You're not allowed here!")
+
+    if request.method == 'POST':
+        message.delete()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+    return render(request, 'base/delete.html', {'obj': message})
+
+@login_required(login_url='/login')
+def delete_message(request, message_id):
+    message = Message.objects.get(id=message_id)
+
+    if request.user != message.user:
+        return HttpResponse("You're not allowed here!")
+
+    if request.method == 'POST':
+        message.delete()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+    return render(request, 'base/delete.html', {'obj': message})
