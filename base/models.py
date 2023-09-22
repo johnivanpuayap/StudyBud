@@ -22,7 +22,8 @@ class Room(models.Model):
     # TextField should be used when you expect to store a potentially large amount of text,
     # such as paragraphs of text, descriptions, or comments.
     description = models.TextField(null=True, blank=True)
-    # participants =
+
+    participants = models.ManyToManyField(User, related_name='participants', blank=True)
 
     # auto now takes a snapshot on every time we save this item
     updated = models.DateTimeField(auto_now=True)

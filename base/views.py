@@ -85,9 +85,9 @@ def home(request):
 
 
 def room(request, room_id):
-    # return HttpResponse('Room')
     room = Room.objects.get(id=room_id)
-
+    room_messages = room.message_set.all().order_by('-created')
+    participants = room.participants.all()
     if request.method == 'POST':
         message = Message.objects.create(
             user=request.user,
@@ -99,10 +99,11 @@ def room(request, room_id):
 
     # Query for a specific child of room
     # Do not use the variable messages since it will be displayed as an error by the flash images
-    room_messages = room.message_set.all().order_by('-created')
+
     context = {
         'room': room,
         'room_messages': room_messages,
+        'participants': participants,
     }
     return render(request, 'base/room.html', context)
 
