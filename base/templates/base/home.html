@@ -5,7 +5,7 @@
 <style>
     .home-container {
         display: grid;
-        grid-template-columns: 1fr 3fr;
+        grid-template-columns: 1fr 3fr 1fr;
     }
 </style>
 
@@ -44,5 +44,17 @@
             {% endfor %}
         </div>
         </div>
+
+    <div>
+        <h3>Recent Activity</h3>
+        <hr>
+        {% for activity in room_activities %}
+            <div>
+                <small>@{{ activity.user }} {{ activity.created|timesince }} ago</small>
+                <small>replied to "{{ activity.room }}"</small>
+                <p>{{ activity }}</p>
+            </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock content %}

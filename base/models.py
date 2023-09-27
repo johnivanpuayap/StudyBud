@@ -48,3 +48,7 @@ class Message(models.Model):
 
     def __str__(self):
         return self.body[0:50]
+
+    class Meta:
+        # The - is used to sort it descending, by default it is sorted ascending
+        ordering = ['-updated', '-created']
