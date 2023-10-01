@@ -1,3 +1,5 @@
 Things to fix
-- [ ] Make Room back button go to the previous page
-- [ ] When deleting messages in the Room, make sure it goes back to the previous page after deleting the room
+- [ ] Fix the back button in Room to go to the previous page
+- [ ] Fix the back button in Create Room to go to the previous page
+- [ ] Fix the cancel button in Create Room to go to the previous page
+- [ ] Fix the back button in Delete Room to go to the previous page
