@@ -137,7 +137,7 @@ def create_room(request):
         Room.objects.create(
             host=request.user,
             topic=topic,
-            name=request.POST.get('name'),
+            name=request.POST.get('name').title(),
             description=request.POST.get('description')
         )
 

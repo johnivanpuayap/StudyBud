@@ -53,11 +53,10 @@
                 </div>
                 {% endif %}
             </div>
-
             <div class="room__box scroll">
                 <div class="room__header scroll">
                     <div class="room__info">
-                        <h3>{{ room.name.title }}</h3>
+                        <h3>{{ room.name|escape }}</h3>
                         <span>{{ room.created|timesince }}</span>
                     </div>
 
@@ -70,12 +69,6 @@
                             <span>@{{ room.host.username }}</span>
                         </a>
                     </div>
-
-{#                    <div class="room__details">#}
-{#                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quasi, tenetur laudantium? Dicta repellendus#}
-{#                        rerum consectetur, voluptatem repudiandae eum ea porro cupiditate provident nulla, deserunt, ab ipsum#}
-{#                        corporis laboriosam deleniti molestias?#}
-{#                    </div>#}
                     <span class="room__topics">{{ room.topic }}</span>
                 </div>
 
@@ -118,7 +111,10 @@
                 </div>
             </div>
             <div class="room__message">
-                <form action="#"><input name="" placeholder="Write your message here..." /></form>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <input name="body" placeholder="Write your message here..." />
+                </form>
             </div>
         </div>
 
