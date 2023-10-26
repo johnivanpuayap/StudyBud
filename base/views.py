@@ -7,7 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .models import Room, Topic, User, Message
-from .forms import RoomForm
+from .forms import RoomForm, UserForm
 
 
 def login_page(request):
@@ -98,7 +98,7 @@ def user_profile(request, user_id):
         'room_activities': room_activities,
         'topics': topics,
     }
-    return render(request, 'base/profile.html', context)
+    return render(request, 'base/profile.html', context=context)
 
 
 def room(request, room_id):
@@ -213,4 +213,13 @@ def delete_message(request, message_id):
 
 @login_required(login_url='login')
 def update_user(request):
-    return render(request, 'base/update_user.html', {})
+    user = request.user
+    form = UserForm(instance=user)
+
+    if request.method == 'POST':
+        form = UserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('user-profile', user_id=user.id)
+
+    return render(request, 'base/update_user.html', {'form': form})
