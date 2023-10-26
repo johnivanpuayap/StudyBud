@@ -209,3 +209,8 @@ def delete_message(request, message_id):
         return HttpResponseRedirect(next_url)
 
     return render(request, 'base/delete.html', {'obj': message})
+
+
+@login_required(login_url='login')
+def update_user(request):
+    return render(request, 'base/update_user.html', {})
